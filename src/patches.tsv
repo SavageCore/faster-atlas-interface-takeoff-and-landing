@@ -1,0 +1,95 @@
+# The values this mod patches, one per line:
+#
+#   FILE<TAB>PROPERTY<TAB>BASE<TAB>OP<TAB>LIMIT<TAB>SCOPE
+#
+# FILE is the MBIN path the game uses, relative to the data root.
+# PROPERTY is the field to rewrite.
+# BASE is the value the game ships today.
+# OP is mul (BASE x factor) or div (BASE / factor).
+# LIMIT is the upper bound for mul and the lower bound for div, so no value
+# can reach zero or run away.
+# SCOPE tags the row. A variant asks for scopes with a factor each, so one
+# group can be scaled differently from another.
+#
+# The render step turns this table into the Lua patch list and into the
+# expected values that make verify checks the built EXML against.
+#
+# The Atlas Interface keeps the whole capture in one entity, unlike the space
+# stations, which split it across a dock node and six location entities. So
+# the approach, the landing and the departure all come from
+# AtlasStation.Entity.MBIN here.
+#
+# The scopes:
+#   forces    the steering forces that push a ship toward a dock, and that
+#             turn it into alignment on the way
+#   approach  the speed of the flight through the gate to the pad
+#   capture   how far out the interface takes the ship over. Not offered: a
+#             probe that makes the capture happen from ten times as far away,
+#             so one flight tells whether this file is read at all when the
+#             speed values appear to do nothing
+#   descent   the speed the ship drops onto the pad
+#   bounce    the spring settle and the bounce when the ship touches down
+#   manoeuvre the time the ship spends lining up with the pad
+#   takeoff   the speed of the flight out of the gate, and the boost on it
+#   climb     the time the ship spends rising off the pad and turning out
+#   handoff   the speed the player gets control back at
+#   height    the height the ship climbs to before it turns out
+#   distance  how far it carries on out before the player takes over
+#
+# height and distance are not asked for by any variant. They are here so a
+# test build can switch one on by adding the scope to a variant, without the
+# table having to change. The same goes for descent, which is a candidate for
+# why the fly-in reads slow: the ship drops onto the pad at 5, half the
+# station's 10.
+#
+# The forces, bounce and manoeuvre values are the shared ones from
+# GCAISPACESHIPGLOBALS, because the Atlas Interface has no per-location
+# equivalent. They are the same bases, ops and limits as Faster Space Station
+# Landing uses, so the two mods agree value for value when they are installed
+# at the same factor. At different factors the pak the game loads last wins
+# for both, which is why both docs tell the user to pick one factor.
+#
+# The manoeuvre is shortened by the same factor as the flight. The alignment
+# is a manoeuvre of fixed length, so a faster flight only stays upright if it
+# is shortened by the same factor; the station landing mod documents the ship
+# arriving mid manoeuvre and landing upside down when it is not.
+#
+# Deliberately left alone:
+#   ApproachNodeTargetOffset and PlayerAutoLandRange, which set where the
+#     capture begins rather than how fast it runs. ApproachRange is in the
+#     table, but only for the capture probe above; no shipped variant asks
+#     for that scope.
+#   RotateToDock, which is a flag
+#   DockingRotateSpeed, which belongs to Faster Spaceship Docking Rotation
+#     Reloaded and is not in this table at all
+#   TakeOffExtraAIHeight and TakeOffProgressForExtraHeight, which are about
+#     the height NPC ships get after they leave, not about the player's ship
+#   PostTakeOffExtraPlayerHeight, which is already 0 and does nothing
+#   TakeOffCost, which is launch thruster fuel and not a speed
+#   LandingHeight, which is where the ship settles, not how fast
+#
+# The game's own spelling of LandingManuevreTime is missing a "u". Do not
+# "fix" it here: the name has to match the data byte for byte, and make
+# verify fails on a property that is not in the patch.
+
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	OutpostDockGetToApproachForce	2	mul	200	forces
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	OutpostDockApproachSpeedForce	5	mul	500	forces
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	OutpostDockMaxForce	400	mul	40000	forces
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingSpringTime	6.0	div	0.05	bounce
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingLandingBounceTime	0.8	div	0.05	bounce
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingLandingBounceHeight	0.5	div	0.05	bounce
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingLandingTime	1.6	div	0.05	manoeuvre
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingLandingTimeDirectional	1.0	div	0.05	manoeuvre
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	DockingRotateStartTime	1.0	div	0.05	manoeuvre
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	LandingManuevreTime	1.0	div	0.05	manoeuvre
+GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN	LandingManeuvreAlignTime	1.0	div	0.05	manoeuvre
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	ApproachSpeed	250	mul	10000	approach
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	ApproachRange	150	mul	100000	capture
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	LandingSpeed	5	mul	10000	descent
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffSpeed	200	mul	10000	takeoff
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffBoost	100	mul	10000	takeoff
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffTime	1.0	div	0.05	climb
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffAlignTime	1.0	div	0.05	climb
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	PostTakeOffExtraPlayerSpeed	60	mul	300	handoff
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffHeight	3	div	1.0	height
+MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN	TakeOffFwdDist	5	mul	100	distance

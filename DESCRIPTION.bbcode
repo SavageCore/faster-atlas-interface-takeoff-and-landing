@@ -1,0 +1,29 @@
+[center][size=5][b]Faster Atlas Interface Takeoff and Landing[/b][/size]
+Speeds up the slow scripted flight into the Atlas Interface, and back out again.[/center]
+
+[b]What it does[/b]
+Entering the Atlas Interface hands your ship to a slow scripted landing flight. This raises its speed and shortens the touchdown settle, so you reach the pad in a fraction of the time. Also does the reverse for takeoff.
+
+[b]Options[/b]
+The installer asks one question, and the answer names both the speed and the
+phase.
+[list]
+[*][b]10x, 5x or 2x[/b] - how much faster[/*]
+[*][b]Landing and takeoff, landing only, takeoff only[/b][/*]
+[/list]
+
+[b]Demo video[/b]
+The video shows the capture and the departure compressed, with the phase and the speed on screen and a timer for each run. Getting the same effect means this mod together with [url=https://www.nexusmods.com/nomanssky/mods/4569]Faster Spaceship Docking Rotation Reloaded [/url]and [url=https://www.nexusmods.com/nomanssky/mods/3689]Auto Eject on Landing[/url].
+
+The ship turning onto the pad and you climbing out of the cockpit are slow parts of the same sequence, and this mod does not touch either of them.
+
+[b]Compatibility[/b]
+[list]
+[*]Modifies [i]GLOBALS/GCAISPACESHIPGLOBALS.GLOBAL.MBIN[/i] and [i]MODELS/SPACE/ATLASSTATION/SHARED/ENTITIES/ATLASSTATION.ENTITY.MBIN[/i]. It may conflict with any other
+mod editing those files[/*]
+[*]Shares the shared ship globals with Faster Space Station Landing, so install both at the same factor[/*]
+[*]Does not touch the space station or anomaly entities, so it is clear of Faster Space Station Landing and Faster Space Station Takeoff[/*]
+[*][b].lua [/b]included so you can merge with AMUMSS [/*]
+[/list]
+
+Built natively on Linux with my [url=https://github.com/SavageCore/AMUMSS/tree/feat/linux-support]AMUMSS Linux port[/url].

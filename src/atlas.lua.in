@@ -1,0 +1,68 @@
+-- Faster Atlas Interface - @VARIANT_LABEL@
+-- RENDERED FILE - do not edit; edit src/atlas.lua.in and src/patches.tsv
+-- and run make release.
+--
+-- Updated by SavageCore
+--
+-- What it does: the game flies your ship into and out of the Atlas Interface
+-- on its own. The speed of that flight comes from the interface's outpost
+-- data, and the manoeuvre that turns the ship upright comes from the shared
+-- ship globals. The game ships both slow. This raises them.
+--
+-- The values are in src/patches.tsv, which also drives the verify step, so
+-- a value can never be patched without also being checked.
+
+local VariantLabel = "@VARIANT_LABEL@"
+
+local ModDesc = "@DESC@"
+
+local ModName     = "Faster Atlas Interface"
+local ModAuthor   = "SavageCore"
+local GameVersion = "v7.04" -- Cosmos
+
+-- Every value this variant patches, rendered from src/patches.tsv.
+local Patches = {
+@PATCHES@
+}
+
+-- Group the patches by file. Each MBIN_CHANGE_TABLE entry needs its own
+-- MXML_CHANGE_TABLE, and MXML_CHANGE_TABLE is a LIST of change blocks even
+-- when there is only one, so the block list is wrapped in an outer table.
+-- Handing AMUMSS a bare block instead makes it report "MXML_CHANGE_TABLE does
+-- not contain any usable TABLE", make 0 changes, and ship nothing.
+local fileOrder = {}
+local byFile = {}
+
+for _, patch in ipairs(Patches) do
+    if byFile[patch.file] == nil then
+        byFile[patch.file] = {}
+        fileOrder[#fileOrder + 1] = patch.file
+    end
+    table.insert(byFile[patch.file], {patch.prop, patch.value})
+end
+
+local MbinChangeTable = {}
+
+for _, file in ipairs(fileOrder) do
+    MbinChangeTable[#MbinChangeTable + 1] = {
+        ["MBIN_FILE_SOURCE"]  = {file},
+        ["MXML_CHANGE_TABLE"] = {
+            {
+                ["VALUE_CHANGE_TABLE"] = byFile[file],
+            },
+        },
+    }
+end
+
+NMS_MOD_DEFINITION_CONTAINER = {
+    ["MOD_FILENAME"]    = ModName.." - "..VariantLabel..".pak",
+    ["MOD_DESCRIPTION"] = ModDesc,
+    ["MOD_AUTHOR"]      = ModAuthor,
+    ["NMS_VERSION"]     = GameVersion,
+    ["MODIFICATIONS"]   =
+    {
+        {
+            ["MBIN_CHANGE_TABLE"] = MbinChangeTable,
+        },
+    },
+}

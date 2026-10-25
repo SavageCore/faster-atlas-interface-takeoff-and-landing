@@ -1,0 +1,6 @@
+build/
+dist/
+__pycache__/
+assets/gallery-*.jpg
+assets/header-*.jpg
+assets/video/

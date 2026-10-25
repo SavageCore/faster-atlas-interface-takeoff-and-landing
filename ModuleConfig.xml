@@ -1,0 +1,94 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Faster Atlas Interface</moduleName>
+  <installSteps order="Explicit">
+    <installStep name="Choose what to speed up">
+      <optionalFileGroups order="Explicit">
+        <group name="Speed" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="10x - landing and takeoff">
+              <description>Ten times faster. Speed up the capture through the gate and the departure back out.</description>
+              <files>
+                <folder source="both-10x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="10x - landing only">
+              <description>Ten times faster. Speed up the capture through the gate, and leave the departure as the game ships it.</description>
+              <files>
+                <folder source="landing-10x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="10x - takeoff only">
+              <description>Ten times faster. Speed up the departure, and leave the capture as the game ships it.</description>
+              <files>
+                <folder source="takeoff-10x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="5x - landing and takeoff">
+              <description>Five times faster. Speed up the capture through the gate and the departure back out.</description>
+              <files>
+                <folder source="both-5x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="5x - landing only">
+              <description>Five times faster. Speed up the capture through the gate, and leave the departure as the game ships it.</description>
+              <files>
+                <folder source="landing-5x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="5x - takeoff only">
+              <description>Five times faster. Speed up the departure, and leave the capture as the game ships it.</description>
+              <files>
+                <folder source="takeoff-5x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="2x - landing and takeoff">
+              <description>Twice as fast. Speed up the capture through the gate and the departure back out.</description>
+              <files>
+                <folder source="both-2x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="2x - landing only">
+              <description>Twice as fast. Speed up the capture through the gate, and leave the departure as the game ships it.</description>
+              <files>
+                <folder source="landing-2x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="2x - takeoff only">
+              <description>Twice as fast. Speed up the departure, and leave the capture as the game ships it.</description>
+              <files>
+                <folder source="takeoff-2x" destination="Faster Atlas Interface" priority="0" />
+              </files>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>
