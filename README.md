@@ -179,7 +179,7 @@ installer section above.
 installer: `fomod/` sits at the zip root, which is how mod managers detect an
 installer, and each option is a folder beside it. Import it into
 [Amethyst](https://github.com/ChrisDKN/Amethyst-Mod-Manager)/[Vortex](https://github.com/Nexus-Mods/Vortex)
-or upload it to Nexus.
+or upload it to Nexus. For a manual install, copy the folder for the option you want into `GAMEDATA/MODS`.
 
 The zip is named after the mod and carries no version, because a mod manager
 names the installed mod after the archive file name and shows the version in a
