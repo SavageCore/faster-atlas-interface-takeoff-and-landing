@@ -137,7 +137,6 @@ control back.
 
 ```sh
 python3 assets/combine.py            # lossless master, 2560x1440, a couple of GB
-python3 assets/combine.py --web      # browser friendly, crf 18
 ```
 
 Both ends of the timer are found in the footage rather than by hand. A landing

@@ -33,8 +33,7 @@ recordings apart from the overlay. The audio is re-encoded, because the
 segments have to be joined and the sources are AAC.
 
 Usage:
-    python3 assets/combine.py            # lossless master
-    python3 assets/combine.py --web      # browser friendly instead
+    python3 assets/combine.py            # lossless master, for upload
 """
 
 import argparse
@@ -268,15 +267,11 @@ def find_bounds(clip, case):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--web", action="store_true",
-                        help="encode for the web instead of losslessly")
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
 
     if args.out is None:
-        name = ("atlas-interface-comparison-web.mp4" if args.web
-                else "atlas-interface-comparison-lossless.mp4")
-        args.out = os.path.join(OUT_DIR, name)
+        args.out = os.path.join(OUT_DIR, "atlas-comparison.mp4")
 
     segments = []
     for speed in SPEEDS:
@@ -309,16 +304,12 @@ def main():
     for segment in segments:
         cmd += ["-i", segment["clip"]]
     cmd += ["-filter_complex_script", graph, "-map", "[outv]", "-map", "[outa]"]
-    if args.web:
-        cmd += ["-c:v", "libx264", "-crf", "18", "-preset", "slow", "-pix_fmt", "yuv420p"]
-    else:
-        cmd += ["-c:v", "libx264", "-qp", "0", "-preset", "medium", "-pix_fmt", "yuv420p"]
+    cmd += ["-c:v", "libx264", "-qp", "0", "-preset", "medium", "-pix_fmt", "yuv420p"]
     cmd += ["-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", args.out]
     run(cmd)
 
     size = os.path.getsize(args.out)
-    print("wrote %s (%.1f MB, %s)" % (args.out, size / 1048576.0,
-                                       "web" if args.web else "lossless"))
+    print("wrote %s (%.1f MB, lossless)" % (args.out, size / 1048576.0))
     return 0
 
 
